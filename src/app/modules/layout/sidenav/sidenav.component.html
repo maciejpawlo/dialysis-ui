@@ -1,0 +1,25 @@
+<mat-sidenav-container fxLayout="row" fxFlexFill>
+
+  <mat-sidenav #sidenav class="app-sidenav mat-elevation-z10" closed mode="over">
+    <mat-toolbar color="primary">
+      Menu
+    </mat-toolbar>
+    <mat-nav-list>
+      <mat-list-item>
+        <a>Home</a>
+      </mat-list-item>
+      <mat-list-item>
+        <a>Patient list</a>
+      </mat-list-item>
+      <mat-list-item>
+        <a>Examination list</a>
+      </mat-list-item>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content fxFlexFill fxLayout="column">
+    <app-toolbar (toggleSidenav)="sidenav.toggle()"></app-toolbar>
+    <!-- Tutaj bedzie router -->
+  </mat-sidenav-content>
+
+</mat-sidenav-container>
