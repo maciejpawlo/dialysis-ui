@@ -5,11 +5,13 @@ import { PatientRoutingModule } from './patient-routing.module';
 import { PatientListComponent } from './components/patient-list/patient-list.component';
 import { MaterialModule } from '../shared/material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { PatientDetailsComponent } from './components/patient-details/patient-details.component';
 
 
 @NgModule({
   declarations: [
-    PatientListComponent
+    PatientListComponent,
+    PatientDetailsComponent
   ],
   imports: [
     CommonModule,

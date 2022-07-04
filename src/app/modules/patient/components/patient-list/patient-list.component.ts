@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Patient } from '../../models/patient';
 
 @Component({
@@ -10,7 +11,9 @@ export class PatientListComponent implements OnInit {
 
   patients!: Patient[];
   displayedColumns: string[] = ['PatientID', 'FirstName', 'LastName', 'PESEL'];
-  constructor() { }
+  constructor(
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     this.patients =
@@ -43,6 +46,11 @@ export class PatientListComponent implements OnInit {
         "UserID": 'sadsadasd'
       },
     ]
+  }
+
+  navigateToPatientDetails(patient: Patient): void {
+    console.log('navigating to patient details... ', patient);
+    this.router.navigate(['/patients/:id', { id: patient.PatientID }])
   }
 
 }
