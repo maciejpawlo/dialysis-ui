@@ -46,7 +46,7 @@ export class ExaminationListComponent implements OnInit {
 
   navigateToExaminationDetails(examination: Examination): void {
     console.log('navigating to examination details... ', examination);
-    this.router.navigate(['/examinations/:id', {id: examination.ExaminationID}])
+    this.router.navigate(['/examinations', examination.ExaminationID])
   }
 
 }

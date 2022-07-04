@@ -50,7 +50,7 @@ export class PatientListComponent implements OnInit {
 
   navigateToPatientDetails(patient: Patient): void {
     console.log('navigating to patient details... ', patient);
-    this.router.navigate(['/patients/:id', { id: patient.PatientID }])
+    this.router.navigate(['/patients', patient.PatientID])
   }
 
 }
