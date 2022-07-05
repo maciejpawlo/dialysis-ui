@@ -1,0 +1,23 @@
+.container {
+  padding: 10px;
+}
+
+mat-card {
+  margin-bottom: 8px;
+  margin-right: 8px;
+  margin-left: 8px;
+}
+
+.mat-card .mat-card-content .mat-card .mat-row .mat-cell {
+  border-bottom: 1px solid transparent;
+  border-top: 1px solid transparent;
+  cursor: pointer;
+}
+
+.mat-row:hover .mat-cell {
+  border-color: currentColor;
+}
+
+.mat-table {
+  max-width: fit-content;
+}

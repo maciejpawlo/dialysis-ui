@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { Examination } from '../../models/examination';
 
@@ -11,6 +13,9 @@ export class ExaminationListComponent implements OnInit {
 
   examinations!: Examination[];
   displayedColumns: string[] = ['ExaminationID', 'Weight', 'Turbidity', 'CreatedAt', 'PatientID'];
+  dataSource!: MatTableDataSource<Examination>;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
   constructor(
     private router: Router
   ) { }
@@ -42,6 +47,11 @@ export class ExaminationListComponent implements OnInit {
         PatientID: 3
       }
     ]
+    this.dataSource = new MatTableDataSource<Examination>(this.examinations)
+  }
+
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
   }
 
   navigateToExaminationDetails(examination: Examination): void {

@@ -7,11 +7,11 @@ const routes: Routes = [
     path: '',
     component: ContentLayoutComponent,
     children: [
-      // {
-      //   path: '',
-      //   redirectTo: 'patients',
-      //   pathMatch: 'full'
-      // },
+      {
+        path: '',
+        redirectTo: 'patients',
+        pathMatch: 'full'
+      },
       {
         path: 'patients',
         loadChildren: () => import('./modules/patient/patient.module').then(m => m.PatientModule)

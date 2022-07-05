@@ -6,6 +6,7 @@ import { PatientListComponent } from './components/patient-list/patient-list.com
 import { MaterialModule } from '../shared/material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { PatientDetailsComponent } from './components/patient-details/patient-details.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { PatientDetailsComponent } from './components/patient-details/patient-de
     CommonModule,
     PatientRoutingModule,
     MaterialModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    NgxChartsModule
   ]
 })
 export class PatientModule { }
