@@ -1,22 +1,25 @@
-<div class="container" fxLayout="row wrap" fxLayout.sm="column" fxLayout.xs="column" fxFill fxLayoutAlign="space-around center wrap"
+<div class="container" fxLayout="row wrap" fxLayout.sm="column" fxLayout.xs="column" fxFill fxLayoutAlign="space-around center"
   fxLayout.sm="column" fxLayoutAlign.sm="stretch" fxLayoutAlign.xs="stretch">
-  <mat-card fxFlex = "30" fxFlex.sm="60" fxFlex.xs="60" class="mat-elevation-z8">
-    <mat-card-title>Personal Data</mat-card-title>
-    <mat-card-content>
-      <mat-list>
-        <mat-list-item>First Name: {{patient.FirstName}}</mat-list-item>
-        <mat-list-item>Last Name: {{patient.LastName}}</mat-list-item>
-        <mat-list-item>Birth: {{patient.BirthDate | date}}</mat-list-item>
-        <mat-list-item>PESEL: {{patient.PESEL}}</mat-list-item>
-      </mat-list>
-    </mat-card-content>
-    <mat-card-actions>
-      <button mat-button>EDIT</button>
-      <button mat-button>DELETE</button>
-    </mat-card-actions>
-  </mat-card>
 
-  <mat-card fxFlex = "40" fxFlex.sm="50" fxFlex.xs="50" class="mat-elevation-z8">
+  <div fxLayout fxFlex="100" fxLayoutAlign="space-around">
+    <mat-card class="mat-elevation-z8" fxFlex="30" fxFlex.sm="100" fxFlex.xs="100">
+      <mat-card-title>Personal Data</mat-card-title>
+      <mat-card-content>
+        <mat-list>
+          <mat-list-item>First Name: {{patient.FirstName}}</mat-list-item>
+          <mat-list-item>Last Name: {{patient.LastName}}</mat-list-item>
+          <mat-list-item>Birth: {{patient.BirthDate | date}}</mat-list-item>
+          <mat-list-item>PESEL: {{patient.PESEL}}</mat-list-item>
+        </mat-list>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button>EDIT</button>
+        <button mat-button>DELETE</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <mat-card fxFlex = "40" fxFlex.sm="50" fxFlex.xs="50" class="mat-elevation-z8" fxFlexAlign="stretch">
     <mat-card-title>Examination Data</mat-card-title>
     <mat-card-content>
       <table mat-table [dataSource]="dataSource" fxFill>
