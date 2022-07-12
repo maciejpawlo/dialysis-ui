@@ -1,5 +1,8 @@
 <div class="container" fxLayout fxFill fxLayoutAlign="space-around center">
-  <div class="mat-elevation-z8" fxFlex = "70" fxFlex.xs="90">
+  <mat-card class="mat-elevation-z8" fxFlex = "70" fxFlex.xs="90">
+    <mat-card-header>
+      <mat-card-title>Examination List</mat-card-title>
+    </mat-card-header>
     <table mat-table [dataSource]="dataSource" fxFill>
 
       <ng-container matColumnDef="ExaminationID">
@@ -31,5 +34,5 @@
       <tr mat-row (click)="navigateToExaminationDetails(row)" *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
     <mat-paginator [length]="dataSource.data.length" [pageSize]="5"></mat-paginator>
-  </div>
+  </mat-card>
 </div>

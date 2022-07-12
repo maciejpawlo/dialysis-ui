@@ -63,4 +63,8 @@ export class PatientListComponent implements OnInit, AfterViewInit {
     this.router.navigate(['/patients', patient.PatientID])
   }
 
+  navigateToPatientAdd(): void {
+    this.router.navigate(['/patients/add'])
+  }
+
 }

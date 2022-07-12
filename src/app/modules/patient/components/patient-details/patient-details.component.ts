@@ -147,4 +147,12 @@ export class PatientDetailsComponent implements OnInit, AfterViewInit {
     console.log('navigating to examination details... ', examination);
     this.router.navigate(['/examinations', examination.ExaminationID])
   }
+
+  navigateToPatientEdit(): void {
+    this.router.navigate(['/patients', this.patient.PatientID, 'edit'])
+  }
+
+  delete(): void {
+    
+  }
 }

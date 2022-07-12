@@ -11,6 +11,8 @@ import { ToolbarComponent } from './modules/layout/toolbar/toolbar.component';
 import { SidenavComponent } from './modules/layout/sidenav/sidenav.component';
 import { AuthLayoutComponent } from './modules/layout/auth-layout/auth-layout.component';
 import { ContentLayoutComponent } from './modules/layout/content-layout/content-layout.component';
+import { HttpClientModule } from '@angular/common/http';
+import { ApiModule } from './modules/core/api/api.module';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,9 @@ import { ContentLayoutComponent } from './modules/layout/content-layout/content-
     BrowserAnimationsModule,
     MaterialModule,
     FormsModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    HttpClientModule,
+    ApiModule.forRoot({ rootUrl: 'https://localhost:44321' })
   ],
   providers: [],
   bootstrap: [AppComponent]

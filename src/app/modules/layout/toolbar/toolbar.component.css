@@ -4,13 +4,6 @@
   padding: 0;
   margin: 8px;
   min-width: 56px;
-
-  /* @media (max-width: 720px) {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  } */
-
 }
 
 .mat-icon {
