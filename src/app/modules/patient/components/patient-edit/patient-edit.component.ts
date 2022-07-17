@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Gender } from 'src/app/modules/core/api/models/gender';
 import { Patient } from '../../models/patient';
 
 @Component({
@@ -30,14 +31,16 @@ export class PatientEditComponent implements OnInit {
       PESEL: "75010595778",
       BirthDate: new Date('2019-01-16'),
       CreatedAt: new Date('2019-01-16'),
-      UserID: 'sadsadasd'
+      UserID: 'sadsadasd',
+      Gender: Gender.$0
     };
 
     this.patientForm = this.fb.group({
       firstName: [this.patient.FirstName, [Validators.required]],
       lastName: [this.patient.LastName, [Validators.required]],
       pesel: [this.patient.PESEL, [Validators.required, Validators.pattern('^[0-9]{11}$')]],
-      // birthDate: [this.patient.BirthDate, [Validators.required]]
+      birthDate: [this.patient.BirthDate, [Validators.required]],
+      gender: [this.patient.Gender, [Validators.required]]
     });
   }
 

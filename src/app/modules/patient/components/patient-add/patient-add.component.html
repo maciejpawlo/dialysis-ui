@@ -30,6 +30,14 @@
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
 
+      <mat-form-field appearance="fill">
+        <mat-label>Gender</mat-label>
+        <mat-select formControlName="gender">
+          <mat-option value=0>Male</mat-option>
+          <mat-option value=1>Female</mat-option>
+        </mat-select>
+      </mat-form-field>
+
       <button mat-button (click)="save()">
         SAVE
       </button>

@@ -66,7 +66,8 @@ export class PatientDetailsComponent implements OnInit, AfterViewInit {
       "PESEL": "75010595778",
       "BirthDate": new Date('2019-01-16'),
       "CreatedAt": new Date('2019-01-16'),
-      "UserID": 'sadsadasd'
+      "UserID": 'sadsadasd',
+      Gender: 0
     };
 
     this.examinations = [
@@ -153,6 +154,6 @@ export class PatientDetailsComponent implements OnInit, AfterViewInit {
   }
 
   delete(): void {
-    
+
   }
 }

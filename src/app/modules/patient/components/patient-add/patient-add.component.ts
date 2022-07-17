@@ -27,7 +27,8 @@ export class PatientAddComponent implements OnInit {
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
       pesel: ['', [Validators.required, Validators.pattern('^[0-9]{11}$')]],
-      birthDate: ['', [Validators.required]]
+      birthDate: ['', [Validators.required]],
+      gender: ['', [Validators.required]]
     });
   }
 
@@ -35,16 +36,16 @@ export class PatientAddComponent implements OnInit {
     console.log(this.patientForm);
     //TODO: Send request -> add patient
     if (this.patientForm.valid) {
-      // let request: CreatePatientRequest = {
-      //   birthDate: this.patientForm.get('birthDate')?.value,
-      //   firstname: this.patientForm.get('firstName')?.value,
-      //   lastname: this.patientForm.get('lastname')?.value,
-      //   gender: 0,
-      //   pesel: this.patientForm.get('pesel')?.value,
-      //   userName: 'atest1'
-      // };
-      // this.userService.apiUserPatientsPost$Json({body: request})
-      //   .subscribe(res => console.log(res));
+      let request: CreatePatientRequest = {
+        birthDate: this.patientForm.get('birthDate')?.value,
+        firstname: this.patientForm.get('firstName')?.value,
+        lastname: this.patientForm.get('lastname')?.value,
+        gender: this.patientForm.get('gender')?.value,
+        pesel: this.patientForm.get('pesel')?.value,
+        userName: 'atest1'
+      };
+      this.userService.apiUserPatientsPost$Json({body: request})
+        .subscribe(res => console.log(res));
     }
     console.log(this.result);
   }

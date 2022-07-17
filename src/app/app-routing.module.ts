@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthLayoutComponent } from './modules/layout/auth-layout/auth-layout.component';
 import { ContentLayoutComponent } from './modules/layout/content-layout/content-layout.component';
-
+//TODO: add guard to content layout
 const routes: Routes = [
   {
     path: '',
@@ -21,6 +22,11 @@ const routes: Routes = [
         loadChildren: () => import('./modules/examination/examination.module').then(m=>m.ExaminationModule)
       }
     ]
+  },
+  {
+    path: 'auth',
+    component: AuthLayoutComponent,
+    loadChildren: () => import('./modules/auth/auth.module').then(m=>m.AuthModule)
   }
 ];
 

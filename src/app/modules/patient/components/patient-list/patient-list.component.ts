@@ -30,7 +30,8 @@ export class PatientListComponent implements OnInit, AfterViewInit {
         "PESEL": "75010595778",
         "BirthDate": new Date('2019-01-16'),
         "CreatedAt": new Date('2019-01-16'),
-        "UserID": 'sadsadasd'
+        "UserID": 'sadsadasd',
+        Gender: 0
       },
       {
         "PatientID": 2,
@@ -39,7 +40,8 @@ export class PatientListComponent implements OnInit, AfterViewInit {
         "PESEL": "75010595778",
         "BirthDate": new Date('2019-01-16'),
         "CreatedAt": new Date('2019-01-16'),
-        "UserID": 'sadsadasd'
+        "UserID": 'sadsadasd',
+        Gender: 0
       },
       {
         "PatientID": 3,
@@ -48,7 +50,8 @@ export class PatientListComponent implements OnInit, AfterViewInit {
         "PESEL": "75010595778",
         "BirthDate": new Date('2019-01-16'),
         "CreatedAt": new Date('2019-01-16'),
-        "UserID": 'sadsadasd'
+        "UserID": 'sadsadasd',
+        Gender: 0
       },
     ]
     this.dataSource = new MatTableDataSource<Patient>(this.patients);
