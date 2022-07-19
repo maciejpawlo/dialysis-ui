@@ -17,13 +17,14 @@ export class PatientAddComponent implements OnInit {
     private router: Router,
     private userService: UserService
     ) { }
-//TODO: add male - female radio button
+
   patientForm!: FormGroup;
   patient!: Patient;
   result!: any;
 
   ngOnInit(): void {
     this.patientForm = this.fb.group({
+      userName: ['', [Validators.required]],
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
       pesel: ['', [Validators.required, Validators.pattern('^[0-9]{11}$')]],
@@ -39,10 +40,10 @@ export class PatientAddComponent implements OnInit {
       let request: CreatePatientRequest = {
         birthDate: this.patientForm.get('birthDate')?.value,
         firstname: this.patientForm.get('firstName')?.value,
-        lastname: this.patientForm.get('lastname')?.value,
+        lastname: this.patientForm.get('lastName')?.value,
         gender: this.patientForm.get('gender')?.value,
         pesel: this.patientForm.get('pesel')?.value,
-        userName: 'atest1'
+        userName: this.patientForm.get('userName')?.value
       };
       this.userService.apiUserPatientsPost$Json({body: request})
         .subscribe(res => console.log(res));

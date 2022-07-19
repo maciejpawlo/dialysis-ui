@@ -1,12 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './modules/core/guards/auth.guard';
 import { AuthLayoutComponent } from './modules/layout/auth-layout/auth-layout.component';
 import { ContentLayoutComponent } from './modules/layout/content-layout/content-layout.component';
-//TODO: add guard to content layout
+
 const routes: Routes = [
   {
     path: '',
     component: ContentLayoutComponent,
+    canActivate: [AuthGuard],
     children: [
       {
         path: '',
@@ -27,7 +29,8 @@ const routes: Routes = [
     path: 'auth',
     component: AuthLayoutComponent,
     loadChildren: () => import('./modules/auth/auth.module').then(m=>m.AuthModule)
-  }
+  },
+  { path: '**', redirectTo: '/auth/login', pathMatch: 'full' }
 ];
 
 @NgModule({

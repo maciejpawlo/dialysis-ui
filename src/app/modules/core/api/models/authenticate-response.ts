@@ -6,6 +6,7 @@ export interface AuthenticateResponse {
   isSuccessful?: boolean;
   message?: null | string;
   refreshToken?: null | string;
+  refreshTokenExpireDate?: string;
   statusCode?: number;
   userName?: null | string;
 }

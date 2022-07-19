@@ -5,6 +5,12 @@
     </mat-card-header>
     <form novalidate (ngSubmit)="save()" [formGroup]="patientForm" fxLayout = "column">
       <mat-form-field appearance="fill">
+        <mat-label>User name</mat-label>
+        <input matInput placeholder="user1234" formControlName="firstName">
+        <mat-error *ngIf="!patientForm.get('firstName')?.valid && patientForm.get('firstName')?.touched">test</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
         <mat-label>First name</mat-label>
         <input matInput placeholder="Jan" formControlName="firstName">
         <mat-error *ngIf="!patientForm.get('firstName')?.valid && patientForm.get('firstName')?.touched">test</mat-error>
