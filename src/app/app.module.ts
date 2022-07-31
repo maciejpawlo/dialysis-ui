@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { forwardRef, NgModule, Provider } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -11,8 +11,15 @@ import { ToolbarComponent } from './modules/layout/toolbar/toolbar.component';
 import { SidenavComponent } from './modules/layout/sidenav/sidenav.component';
 import { AuthLayoutComponent } from './modules/layout/auth-layout/auth-layout.component';
 import { ContentLayoutComponent } from './modules/layout/content-layout/content-layout.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ApiModule } from './modules/core/api/api.module';
+import { TokenInterceptor } from './modules/core/interceptors/token.interceptor';
+
+export const API_INTERCEPTOR_PROVIDER: Provider = {
+  provide: HTTP_INTERCEPTORS,
+  useExisting: forwardRef(() => TokenInterceptor),
+  multi: true
+};
 
 @NgModule({
   declarations: [
@@ -30,9 +37,12 @@ import { ApiModule } from './modules/core/api/api.module';
     FormsModule,
     FlexLayoutModule,
     HttpClientModule,
-    ApiModule.forRoot({ rootUrl: 'https://localhost:44321' })
+    ApiModule.forRoot({ rootUrl: 'https://localhost:5001' })
   ],
-  providers: [],
+  providers: [
+    TokenInterceptor,
+    API_INTERCEPTOR_PROVIDER
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

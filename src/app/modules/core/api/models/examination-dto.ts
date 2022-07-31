@@ -6,4 +6,5 @@ export interface ExaminationDto {
   patientID: number;
   turbidity: number;
   weight: number;
+  createdAt?: string;
 }

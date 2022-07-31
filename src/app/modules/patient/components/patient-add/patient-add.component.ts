@@ -20,7 +20,6 @@ export class PatientAddComponent implements OnInit {
 
   patientForm!: FormGroup;
   patient!: Patient;
-  result!: any;
 
   ngOnInit(): void {
     this.patientForm = this.fb.group({
@@ -34,8 +33,6 @@ export class PatientAddComponent implements OnInit {
   }
 
   save(): void{
-    console.log(this.patientForm);
-    //TODO: Send request -> add patient
     if (this.patientForm.valid) {
       let request: CreatePatientRequest = {
         birthDate: this.patientForm.get('birthDate')?.value,
@@ -46,9 +43,14 @@ export class PatientAddComponent implements OnInit {
         userName: this.patientForm.get('userName')?.value
       };
       this.userService.apiUserPatientsPost$Json({body: request})
-        .subscribe(res => console.log(res));
+        .subscribe({
+          next: data=>{
+            console.log(data)
+          }
+        });
     }
-    console.log(this.result);
+    //TODO: display dialog with result
+    this.router.navigate(['/patients/patientsList']);
   }
 
 }

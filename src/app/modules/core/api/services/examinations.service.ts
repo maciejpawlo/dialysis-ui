@@ -29,12 +29,12 @@ export class ExaminationsService extends BaseService {
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiExaminationsGet()` instead.
+   * To access only the response body, use `apiExaminationsGet$Plain()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiExaminationsGet$Response(params?: {
-  }): Observable<StrictHttpResponse<void>> {
+  apiExaminationsGet$Plain$Response(params?: {
+  }): Observable<StrictHttpResponse<Array<ExaminationDto>>> {
 
     const rb = new RequestBuilder(this.rootUrl, ExaminationsService.ApiExaminationsGetPath, 'get');
     if (params) {
@@ -42,26 +42,64 @@ export class ExaminationsService extends BaseService {
 
     return this.http.request(rb.build({
       responseType: 'text',
-      accept: '*/*'
+      accept: 'text/plain'
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return (r as HttpResponse<any>).clone({ body: undefined }) as StrictHttpResponse<void>;
+        return r as StrictHttpResponse<Array<ExaminationDto>>;
       })
     );
   }
 
   /**
    * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `apiExaminationsGet$Response()` instead.
+   * To access the full response (for headers, for example), `apiExaminationsGet$Plain$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiExaminationsGet(params?: {
-  }): Observable<void> {
+  apiExaminationsGet$Plain(params?: {
+  }): Observable<Array<ExaminationDto>> {
 
-    return this.apiExaminationsGet$Response(params).pipe(
-      map((r: StrictHttpResponse<void>) => r.body as void)
+    return this.apiExaminationsGet$Plain$Response(params).pipe(
+      map((r: StrictHttpResponse<Array<ExaminationDto>>) => r.body as Array<ExaminationDto>)
+    );
+  }
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiExaminationsGet$Json()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiExaminationsGet$Json$Response(params?: {
+  }): Observable<StrictHttpResponse<Array<ExaminationDto>>> {
+
+    const rb = new RequestBuilder(this.rootUrl, ExaminationsService.ApiExaminationsGetPath, 'get');
+    if (params) {
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'text/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<Array<ExaminationDto>>;
+      })
+    );
+  }
+
+  /**
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `apiExaminationsGet$Json$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiExaminationsGet$Json(params?: {
+  }): Observable<Array<ExaminationDto>> {
+
+    return this.apiExaminationsGet$Json$Response(params).pipe(
+      map((r: StrictHttpResponse<Array<ExaminationDto>>) => r.body as Array<ExaminationDto>)
     );
   }
 
@@ -118,13 +156,13 @@ export class ExaminationsService extends BaseService {
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiExaminationsIdGet()` instead.
+   * To access only the response body, use `apiExaminationsIdGet$Plain()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiExaminationsIdGet$Response(params: {
+  apiExaminationsIdGet$Plain$Response(params: {
     id: number;
-  }): Observable<StrictHttpResponse<void>> {
+  }): Observable<StrictHttpResponse<ExaminationDto>> {
 
     const rb = new RequestBuilder(this.rootUrl, ExaminationsService.ApiExaminationsIdGetPath, 'get');
     if (params) {
@@ -133,27 +171,68 @@ export class ExaminationsService extends BaseService {
 
     return this.http.request(rb.build({
       responseType: 'text',
-      accept: '*/*'
+      accept: 'text/plain'
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return (r as HttpResponse<any>).clone({ body: undefined }) as StrictHttpResponse<void>;
+        return r as StrictHttpResponse<ExaminationDto>;
       })
     );
   }
 
   /**
    * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `apiExaminationsIdGet$Response()` instead.
+   * To access the full response (for headers, for example), `apiExaminationsIdGet$Plain$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiExaminationsIdGet(params: {
+  apiExaminationsIdGet$Plain(params: {
     id: number;
-  }): Observable<void> {
+  }): Observable<ExaminationDto> {
 
-    return this.apiExaminationsIdGet$Response(params).pipe(
-      map((r: StrictHttpResponse<void>) => r.body as void)
+    return this.apiExaminationsIdGet$Plain$Response(params).pipe(
+      map((r: StrictHttpResponse<ExaminationDto>) => r.body as ExaminationDto)
+    );
+  }
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiExaminationsIdGet$Json()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiExaminationsIdGet$Json$Response(params: {
+    id: number;
+  }): Observable<StrictHttpResponse<ExaminationDto>> {
+
+    const rb = new RequestBuilder(this.rootUrl, ExaminationsService.ApiExaminationsIdGetPath, 'get');
+    if (params) {
+      rb.path('id', params.id, {});
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'text/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<ExaminationDto>;
+      })
+    );
+  }
+
+  /**
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `apiExaminationsIdGet$Json$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiExaminationsIdGet$Json(params: {
+    id: number;
+  }): Observable<ExaminationDto> {
+
+    return this.apiExaminationsIdGet$Json$Response(params).pipe(
+      map((r: StrictHttpResponse<ExaminationDto>) => r.body as ExaminationDto)
     );
   }
 
@@ -249,6 +328,93 @@ export class ExaminationsService extends BaseService {
 
     return this.apiExaminationsIdDelete$Response(params).pipe(
       map((r: StrictHttpResponse<void>) => r.body as void)
+    );
+  }
+
+  /**
+   * Path part for operation apiExaminationsExaminationByPatientIdGet
+   */
+  static readonly ApiExaminationsExaminationByPatientIdGetPath = '/api/Examinations/examinationByPatientId';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiExaminationsExaminationByPatientIdGet$Plain()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiExaminationsExaminationByPatientIdGet$Plain$Response(params?: {
+    patientId?: number;
+  }): Observable<StrictHttpResponse<Array<ExaminationDto>>> {
+
+    const rb = new RequestBuilder(this.rootUrl, ExaminationsService.ApiExaminationsExaminationByPatientIdGetPath, 'get');
+    if (params) {
+      rb.query('patientId', params.patientId, {});
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'text',
+      accept: 'text/plain'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<Array<ExaminationDto>>;
+      })
+    );
+  }
+
+  /**
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `apiExaminationsExaminationByPatientIdGet$Plain$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiExaminationsExaminationByPatientIdGet$Plain(params?: {
+    patientId?: number;
+  }): Observable<Array<ExaminationDto>> {
+
+    return this.apiExaminationsExaminationByPatientIdGet$Plain$Response(params).pipe(
+      map((r: StrictHttpResponse<Array<ExaminationDto>>) => r.body as Array<ExaminationDto>)
+    );
+  }
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiExaminationsExaminationByPatientIdGet$Json()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiExaminationsExaminationByPatientIdGet$Json$Response(params?: {
+    patientId?: number;
+  }): Observable<StrictHttpResponse<Array<ExaminationDto>>> {
+
+    const rb = new RequestBuilder(this.rootUrl, ExaminationsService.ApiExaminationsExaminationByPatientIdGetPath, 'get');
+    if (params) {
+      rb.query('patientId', params.patientId, {});
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'text/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<Array<ExaminationDto>>;
+      })
+    );
+  }
+
+  /**
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `apiExaminationsExaminationByPatientIdGet$Json$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiExaminationsExaminationByPatientIdGet$Json(params?: {
+    patientId?: number;
+  }): Observable<Array<ExaminationDto>> {
+
+    return this.apiExaminationsExaminationByPatientIdGet$Json$Response(params).pipe(
+      map((r: StrictHttpResponse<Array<ExaminationDto>>) => r.body as Array<ExaminationDto>)
     );
   }
 

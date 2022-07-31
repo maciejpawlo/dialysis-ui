@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { AuthenticateRequest, RefreshTokenRequest } from '../api/models';
+import { AuthenticateRequest, AuthenticateResponse, RefreshTokenRequest } from '../api/models';
 import { AuthService } from '../api/services';
 import { TokenService } from './token.service';
 import jwt_decode from 'jwt-decode';
+import { lastValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -19,17 +20,7 @@ export class AuthenticationService {
       userName: userName,
       password: password
     };
-    this.authClient.apiAuthAuthenticatePost$Json({body: request})
-      .subscribe({
-        next: (data) => {
-          console.log(data);
-          this.tokenService.saveToken(data.accessToken!);
-          this.tokenService.saveRefreshToken(data.refreshToken!, new Date(data.refreshTokenExpireDate!));
-        },
-        error: (err) => {
-          console.error(err);
-        }
-      });
+    return this.authClient.apiAuthAuthenticatePost$Json({body: request});
   }
 
   logout(){
@@ -44,20 +35,10 @@ export class AuthenticationService {
       refreshToken: token!
     };
 
-    this.authClient.apiAuthRefreshTokenPost$Json({body: request})
-      .subscribe({
-        next: (data) => {
-          console.log(data);
-          this.tokenService.saveToken(data.accessToken!);
-          this.tokenService.saveRefreshToken(data.refreshToken!, new Date(data.refreshTokenExpireDate!));
-        },
-        error: (err) => {
-          console.error(err);
-        }
-      });
+    return this.authClient.apiAuthRefreshTokenPost$Json({body: request});
   }
 
-  isLoggedIn(): boolean{
+  async isLoggedIn(){
     //check both accessToken and refreshToken expire time
     //if expired return false
     const accessToken = this.tokenService.getToken();
@@ -66,11 +47,23 @@ export class AuthenticationService {
     }
     const refreshTokenExpireDate = new Date(this.tokenService.getRefreshTokenExpireDate()!);
     const decodedToken: any = jwt_decode(accessToken!);
-    let accessTokenExpireDateText = decodedToken['exp'] as number;
+    const accessTokenExpireDateText = decodedToken['exp'] as number;
     const accessTokenExpireDate = new Date(accessTokenExpireDateText * 1000);
     const now = new Date();
-    if(accessTokenExpireDate < now || refreshTokenExpireDate < now){
-      return false;
+
+    if(accessTokenExpireDate < now){
+      let refreshResult = false;
+      if(!(refreshTokenExpireDate < now)){
+
+        let result = await lastValueFrom(this.refreshToken());
+        if(result.accessToken){
+          this.tokenService.saveToken(result.accessToken);
+          this.tokenService.saveRefreshToken(result.refreshToken!, new Date(result.refreshTokenExpireDate!))
+          refreshResult = true;
+        }
+      }
+      console.log('refersh result: ', refreshResult)
+      return refreshResult;
     } else {
       return true;
     }

@@ -6,22 +6,22 @@
     <table mat-table [dataSource]="dataSource" fxFill>
       <ng-container matColumnDef="PatientID">
         <th mat-header-cell *matHeaderCellDef> Patient ID </th>
-        <td mat-cell *matCellDef="let element"> {{element.PatientID}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.patientID}} </td>
       </ng-container>
 
       <ng-container matColumnDef="FirstName">
         <th mat-header-cell *matHeaderCellDef> Name </th>
-        <td mat-cell *matCellDef="let element"> {{element.FirstName}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.firstName}} </td>
       </ng-container>
 
       <ng-container matColumnDef="LastName">
         <th mat-header-cell *matHeaderCellDef> Last Name </th>
-        <td mat-cell *matCellDef="let element"> {{element.LastName}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.lastName}} </td>
       </ng-container>
 
       <ng-container matColumnDef="PESEL">
         <th mat-header-cell *matHeaderCellDef> PESEL </th>
-        <td mat-cell *matCellDef="let element"> {{element.PESEL}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.pesel}} </td>
       </ng-container>
 
       <ng-container matColumnDef="Actions">
@@ -38,9 +38,12 @@
     </table>
     <mat-paginator [length]="dataSource.data.length" [pageSize]="5"></mat-paginator>
 
-    <mat-card-actions align="start">
+    <mat-card-actions align="start" *ngIf="role?.toLowerCase() === 'administrator'">
       <button mat-flat-button color="basic" (click)="navigateToPatientAdd()">
         ADD PATIENT
+      </button>
+      <button mat-flat-button color="basic">
+        ASSIGN TO DOCTOR
       </button>
     </mat-card-actions>
 

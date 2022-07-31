@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { map } from 'rxjs';
+import { PatientDto } from 'src/app/modules/core/api/models';
 import { Gender } from 'src/app/modules/core/api/models/gender';
+import { UserService } from 'src/app/modules/core/api/services';
 import { Patient } from '../../models/patient';
 
 @Component({
@@ -14,39 +17,72 @@ export class PatientEditComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private userService: UserService
     ) { }
 
   patientForm!: FormGroup;
+
   patient!: Patient;
 
   ngOnInit(): void {
     const patientID = this.route.snapshot.paramMap.get('id');
-    console.log('edit patient with id: ', patientID);
-    //TODO: get patient by id
-    this.patient = {
-      PatientID: Number(patientID),
-      FirstName: "Pacjent",
-      LastName: "Testowy",
-      PESEL: "75010595778",
-      BirthDate: new Date('2019-01-16'),
-      CreatedAt: new Date('2019-01-16'),
-      UserID: 'sadsadasd',
-      Gender: Gender.$0
-    };
 
     this.patientForm = this.fb.group({
-      firstName: [this.patient.FirstName, [Validators.required]],
-      lastName: [this.patient.LastName, [Validators.required]],
-      pesel: [this.patient.PESEL, [Validators.required, Validators.pattern('^[0-9]{11}$')]],
-      birthDate: [this.patient.BirthDate, [Validators.required]],
-      gender: [this.patient.Gender, [Validators.required]]
+      firstName: ['', [Validators.required]],
+      lastName: ['', [Validators.required]],
+      pesel: ['', [Validators.required, Validators.pattern('^[0-9]{11}$')]],
+      birthDate: ['', [Validators.required]],
+      gender: ['', [Validators.required]]
     });
+
+    this.userService.apiUserPatientsIdGet$Json({id: Number(patientID)})
+    .pipe(map(data => {
+      return data.patients![0];
+    }))
+    .subscribe({next: data => {
+      this.patient = {
+        PatientID: data.patientID!,
+        PESEL: data.pesel,
+        BirthDate: new Date(data.birthDate!),
+        CreatedAt: new Date(),
+        Gender: data.gender,
+        FirstName: data.firstName,
+        LastName: data.lastName,
+        UserID: ''
+      };
+
+      this.patientForm.patchValue({
+        firstName: this.patient.FirstName,
+        lastName: this.patient.LastName,
+        pesel: this.patient.PESEL,
+        birthDate: this.patient.BirthDate,
+        gender: this.patient.Gender
+      });
+
+  }});
+
   }
 
   save(): void{
-    console.log(this.patientForm);
-    //TODO: Send request -> add patient
+    console.log(this.patientForm.value);
+    if(this.patientForm.valid){
+
+      let patientRequest: PatientDto = {
+        firstName: this.patientForm.get('firstName')?.value,
+        lastName: this.patientForm.get('lastName')?.value,
+        pesel: this.patientForm.get('pesel')?.value,
+        birthDate: this.patientForm.get('birthDate')?.value,
+        gender: this.patientForm.get('gender')?.value,
+      };
+      this.userService.apiUserPatientsIdPut$Json({id: this.patient.PatientID, body: patientRequest})
+        .subscribe({
+          next: data=>{
+            console.log(data);
+          }
+      });
+      
+    }
     this.router.navigate(['/patients', this.patient.PatientID])
   }
 

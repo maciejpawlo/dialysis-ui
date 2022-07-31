@@ -2,6 +2,10 @@ import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
+import { map, Observable } from 'rxjs';
+import { ExaminationDto, PatientDto } from 'src/app/modules/core/api/models';
+import { ExaminationsService, UserService } from 'src/app/modules/core/api/services';
+import { TokenService } from 'src/app/modules/core/services/token.service';
 import { Examination } from 'src/app/modules/examination/models/examination';
 import { Patient } from '../../models/patient';
 
@@ -12,11 +16,20 @@ import { Patient } from '../../models/patient';
 })
 export class PatientDetailsComponent implements OnInit, AfterViewInit {
 
-  patient!: Patient;
+  patient: Patient = {
+    PatientID: 0,
+    PESEL: '',
+    BirthDate: new Date(),
+    CreatedAt: new Date(),
+    Gender: 0,
+    FirstName: '',
+    LastName: '',
+    UserID: ''
+  };
   //examination table data
-  examinations!: Examination[]
+  examinations!: ExaminationDto[]
   displayedColumns: string[] = ['ExaminationID', 'Weight', 'Turbidity', 'CreatedAt', 'PatientID'];
-  dataSource!: MatTableDataSource<Examination>;
+  dataSource!: MatTableDataSource<ExaminationDto>;
 
   //chart options
   showLabels: boolean = true;
@@ -28,125 +41,61 @@ export class PatientDetailsComponent implements OnInit, AfterViewInit {
   xAxisLabel: string = 'Date';
   yAxisLabel: string = 'Turbidity';
   timeline: boolean = true;
-  data: any[] = [
-    {
-      "name": "Pacjent Testowy",
-      "series": [
-        {
-          "name": new Date('2019-01-14').toDateString(),
-          "value": 25
-        },
-        {
-          "name": new Date('2019-01-15').toDateString(),
-          "value": 40
-        },
-        {
-          "name": new Date('2019-01-16').toDateString(),
-          "value": 50
-        }
-      ]
-    },
-  ];
+  chartData: any[] = [];
+
+  role!:string | null;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private userService: UserService,
+    private examinationsService: ExaminationsService,
+    private tokenService: TokenService
     ) { }
 
   ngOnInit(): void {
     const patientID = this.route.snapshot.paramMap.get('id');
-    //TODO: get patient by id
-    //get examinations by patient id
-    this.patient = {
-      "PatientID": Number(patientID),
-      "FirstName": "Pacjent",
-      "LastName": "Testowy",
-      "PESEL": "75010595778",
-      "BirthDate": new Date('2019-01-16'),
-      "CreatedAt": new Date('2019-01-16'),
-      "UserID": 'sadsadasd',
-      Gender: 0
-    };
 
-    this.examinations = [
-      {
-        ExaminationID: 1,
-        Weight: 25,
-        Turbidity: 10,
-        ImageURL: 'https://www.highsnobiety.com/static-assets/thumbor/i19CiOdg1nWNFF9C1VtqXhGdalE=/1600x1067/www.highsnobiety.com/static-assets/wp-content/uploads/2016/08/17122514/supreme-brick-1.jpg',
-        CreatedAt: new Date('2019-01-16'),
-        PatientID: Number(patientID)
-      },
-      {
-        ExaminationID: 2,
-        Weight: 25,
-        Turbidity: 10,
-        ImageURL: 'https://www.highsnobiety.com/static-assets/thumbor/i19CiOdg1nWNFF9C1VtqXhGdalE=/1600x1067/www.highsnobiety.com/static-assets/wp-content/uploads/2016/08/17122514/supreme-brick-1.jpg',
-        CreatedAt: new Date('2019-01-16'),
-        PatientID: Number(patientID)
-      },
-      {
-        ExaminationID: 3,
-        Weight: 25,
-        Turbidity: 10,
-        ImageURL: 'https://www.highsnobiety.com/static-assets/thumbor/i19CiOdg1nWNFF9C1VtqXhGdalE=/1600x1067/www.highsnobiety.com/static-assets/wp-content/uploads/2016/08/17122514/supreme-brick-1.jpg',
-        CreatedAt: new Date('2019-01-16'),
-        PatientID: Number(patientID)
-      },
-      {
-        ExaminationID: 4,
-        Weight: 25,
-        Turbidity: 10,
-        ImageURL: 'https://www.highsnobiety.com/static-assets/thumbor/i19CiOdg1nWNFF9C1VtqXhGdalE=/1600x1067/www.highsnobiety.com/static-assets/wp-content/uploads/2016/08/17122514/supreme-brick-1.jpg',
-        CreatedAt: new Date('2019-01-16'),
-        PatientID: Number(patientID)
-      },
-      {
-        ExaminationID: 5,
-        Weight: 25,
-        Turbidity: 10,
-        ImageURL: 'https://www.highsnobiety.com/static-assets/thumbor/i19CiOdg1nWNFF9C1VtqXhGdalE=/1600x1067/www.highsnobiety.com/static-assets/wp-content/uploads/2016/08/17122514/supreme-brick-1.jpg',
-        CreatedAt: new Date('2019-01-16'),
-        PatientID: Number(patientID)
-      },
-      {
-        ExaminationID: 6,
-        Weight: 25,
-        Turbidity: 10,
-        ImageURL: 'https://www.highsnobiety.com/static-assets/thumbor/i19CiOdg1nWNFF9C1VtqXhGdalE=/1600x1067/www.highsnobiety.com/static-assets/wp-content/uploads/2016/08/17122514/supreme-brick-1.jpg',
-        CreatedAt: new Date('2019-01-16'),
-        PatientID: Number(patientID)
-      },
-      {
-        ExaminationID: 7,
-        Weight: 25,
-        Turbidity: 10,
-        ImageURL: 'https://www.highsnobiety.com/static-assets/thumbor/i19CiOdg1nWNFF9C1VtqXhGdalE=/1600x1067/www.highsnobiety.com/static-assets/wp-content/uploads/2016/08/17122514/supreme-brick-1.jpg',
-        CreatedAt: new Date('2019-01-16'),
-        PatientID: Number(patientID)
-      },
-      {
-        ExaminationID: 8,
-        Weight: 25,
-        Turbidity: 10,
-        ImageURL: 'https://www.highsnobiety.com/static-assets/thumbor/i19CiOdg1nWNFF9C1VtqXhGdalE=/1600x1067/www.highsnobiety.com/static-assets/wp-content/uploads/2016/08/17122514/supreme-brick-1.jpg',
-        CreatedAt: new Date('2019-01-16'),
-        PatientID: Number(patientID)
-      }
-    ];
+    this.userService.apiUserPatientsIdGet$Json({id: Number(patientID)})
+      .pipe(map(data => {
+        return data.patients![0];
+      }))
+      .subscribe({next: data => {
+        this.patient = {
+          PatientID: data.patientID!,
+          PESEL: data.pesel,
+          BirthDate: new Date(data.birthDate!),
+          CreatedAt: new Date(),
+          Gender: data.gender,
+          FirstName: data.firstName,
+          LastName: data.lastName,
+          UserID: ''
+        };
+    }});
 
-    this.dataSource = new MatTableDataSource<Examination>(this.examinations)
+    this.dataSource = new MatTableDataSource<ExaminationDto>()
+
+    this.examinationsService.apiExaminationsExaminationByPatientIdGet$Json({patientId: Number(patientID)})
+      .subscribe({
+        next: data => {
+          this.examinations = data;
+          this.dataSource.data = data;
+          this.chartData = this.generateExaminationChartData(data);
+        }
+      });
+
+    this.role = this.tokenService.getUserRole();
+    console.log(this.role)
   }
 
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
   }
 
-  navigateToExaminationDetails(examination: Examination): void {
-    console.log('navigating to examination details... ', examination);
-    this.router.navigate(['/examinations', examination.ExaminationID])
+  navigateToExaminationDetails(examination: ExaminationDto): void {
+    this.router.navigate(['/examinations', examination.examinationID])
   }
 
   navigateToPatientEdit(): void {
@@ -155,5 +104,24 @@ export class PatientDetailsComponent implements OnInit, AfterViewInit {
 
   delete(): void {
 
+  }
+
+  generateExaminationChartData(examinations: ExaminationDto[]) {
+    let chartData: any[] = [
+      {
+        "name": `Examination`,
+        "series": []
+      }
+    ];
+
+    examinations.forEach(item => {
+      const chartItem = {
+        "name": new Date(item.createdAt!).toLocaleString('en-US'),
+        "value": item.turbidity
+      }
+      chartData[0].series.push(chartItem);
+    });
+
+    return chartData;
   }
 }

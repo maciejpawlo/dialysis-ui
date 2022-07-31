@@ -1,7 +1,12 @@
+import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { map, Observable } from 'rxjs';
+import { PatientDto } from 'src/app/modules/core/api/models';
+import { UserService } from 'src/app/modules/core/api/services';
+import { TokenService } from 'src/app/modules/core/services/token.service';
 import { Patient } from '../../models/patient';
 
 @Component({
@@ -11,59 +16,47 @@ import { Patient } from '../../models/patient';
 })
 export class PatientListComponent implements OnInit, AfterViewInit {
 
-  patients!: Patient[];
-  dataSource!: MatTableDataSource<Patient>;
+  patients!: PatientDto[];
+  dataSource!: MatTableDataSource<PatientDto>;
   displayedColumns: string[] = ['PatientID', 'FirstName', 'LastName', 'PESEL'];
+  role!: string | null;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(
-    private router: Router
+    private router: Router,
+    private userService: UserService,
+    private tokenService: TokenService
   ) { }
 
   ngOnInit(): void {
-    this.patients =
-    [
-      {
-        "PatientID": 1,
-        "FirstName": "Pacjent",
-        "LastName": "Testowy",
-        "PESEL": "75010595778",
-        "BirthDate": new Date('2019-01-16'),
-        "CreatedAt": new Date('2019-01-16'),
-        "UserID": 'sadsadasd',
-        Gender: 0
-      },
-      {
-        "PatientID": 2,
-        "FirstName": "Pacjent",
-        "LastName": "Testowy",
-        "PESEL": "75010595778",
-        "BirthDate": new Date('2019-01-16'),
-        "CreatedAt": new Date('2019-01-16'),
-        "UserID": 'sadsadasd',
-        Gender: 0
-      },
-      {
-        "PatientID": 3,
-        "FirstName": "Pacjent",
-        "LastName": "Testowy",
-        "PESEL": "75010595778",
-        "BirthDate": new Date('2019-01-16'),
-        "CreatedAt": new Date('2019-01-16'),
-        "UserID": 'sadsadasd',
-        Gender: 0
-      },
-    ]
-    this.dataSource = new MatTableDataSource<Patient>(this.patients);
+      this.dataSource = new MatTableDataSource<PatientDto>();
+
+      let queryParams = {};
+      this.role = this.tokenService.getUserRole();
+
+      if(this.role === 'Doctor'){
+        this.userService.apiUserUserInfoGet$Json()
+          .subscribe({
+            next: data => {
+              queryParams = {doctorID: data.internalUserID}
+            }
+          });
+      }
+
+      this.userService.apiUserPatientsGet$Json(queryParams)
+        .subscribe({
+          next: data => {
+            this.dataSource.data = data.patients!
+          }
+        });
   }
 
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
   }
 
-  navigateToPatientDetails(patient: Patient): void {
-    console.log('navigating to patient details... ', patient);
-    this.router.navigate(['/patients', patient.PatientID])
+  navigateToPatientDetails(patient: PatientDto): void {
+    this.router.navigate(['/patients', patient.patientID])
   }
 
   navigateToPatientAdd(): void {
