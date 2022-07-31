@@ -1,10 +1,12 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map, Observable } from 'rxjs';
 import { ExaminationDto, PatientDto } from 'src/app/modules/core/api/models';
 import { ExaminationsService, UserService } from 'src/app/modules/core/api/services';
+import { ConfirmDialogComponent, ConfirmDialogModel } from 'src/app/modules/core/dialogs/confirm-dialog/confirm-dialog.component';
 import { TokenService } from 'src/app/modules/core/services/token.service';
 import { Examination } from 'src/app/modules/examination/models/examination';
 import { Patient } from '../../models/patient';
@@ -52,7 +54,8 @@ export class PatientDetailsComponent implements OnInit, AfterViewInit {
     private router: Router,
     private userService: UserService,
     private examinationsService: ExaminationsService,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private dialog: MatDialog
     ) { }
 
   ngOnInit(): void {
@@ -102,8 +105,28 @@ export class PatientDetailsComponent implements OnInit, AfterViewInit {
     this.router.navigate(['/patients', this.patient.PatientID, 'edit'])
   }
 
-  delete(): void {
+  navigateToPatientList(): void {
+    this.router.navigate(['/patients/patientsList'])
+  }
 
+  delete(): void {
+    const dialogData = new ConfirmDialogModel('Delete patient', 'Are you sure you want to delete patient?')
+
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(result=>{
+      if(result){
+        this.userService.apiUserPatientsIdDelete$Json({id: this.patient.PatientID})
+          .subscribe({
+            next: ()=>{
+              this.router.navigate(['/patients/patientsList'])
+            }
+          });
+      }
+    })
   }
 
   generateExaminationChartData(examinations: ExaminationDto[]) {

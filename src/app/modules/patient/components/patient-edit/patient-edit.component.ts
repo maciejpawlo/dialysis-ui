@@ -65,9 +65,7 @@ export class PatientEditComponent implements OnInit {
   }
 
   save(): void{
-    console.log(this.patientForm.value);
     if(this.patientForm.valid){
-
       let patientRequest: PatientDto = {
         firstName: this.patientForm.get('firstName')?.value,
         lastName: this.patientForm.get('lastName')?.value,
@@ -78,12 +76,13 @@ export class PatientEditComponent implements OnInit {
       this.userService.apiUserPatientsIdPut$Json({id: this.patient.PatientID, body: patientRequest})
         .subscribe({
           next: data=>{
-            console.log(data);
-          }
+            this.router.navigate(['/patients', this.patient.PatientID]);
+          },
+          error(err) {
+              console.log('dupa:', err);
+          },
       });
-      
     }
-    this.router.navigate(['/patients', this.patient.PatientID])
   }
 
 }

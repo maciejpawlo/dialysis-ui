@@ -68,4 +68,35 @@ export class AuthenticationService {
       return true;
     }
   }
+
+  isAccessTokenExpired() {
+    const accessToken = this.tokenService.getToken();
+    const now = new Date();
+    if(!accessToken){
+      return true;
+    }
+    const decodedToken: any = jwt_decode(accessToken!);
+    const accessTokenExpireDateText = decodedToken['exp'] as number;
+    const accessTokenExpireDate = new Date(accessTokenExpireDateText * 1000);
+
+    if(accessTokenExpireDate < now) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  isRefreshTokenExpired() {
+    const refreshTokenExpireDate = new Date(this.tokenService.getRefreshTokenExpireDate()!);
+    const now = new Date();
+    if(!refreshTokenExpireDate){
+      return true;
+    }
+
+    if(refreshTokenExpireDate < now){
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

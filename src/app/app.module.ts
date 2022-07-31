@@ -14,6 +14,7 @@ import { ContentLayoutComponent } from './modules/layout/content-layout/content-
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ApiModule } from './modules/core/api/api.module';
 import { TokenInterceptor } from './modules/core/interceptors/token.interceptor';
+import { CoreModule } from './modules/core/core.module';
 
 export const API_INTERCEPTOR_PROVIDER: Provider = {
   provide: HTTP_INTERCEPTORS,
@@ -37,7 +38,8 @@ export const API_INTERCEPTOR_PROVIDER: Provider = {
     FormsModule,
     FlexLayoutModule,
     HttpClientModule,
-    ApiModule.forRoot({ rootUrl: 'https://localhost:5001' })
+    ApiModule.forRoot({ rootUrl: 'https://localhost:5001' }),
+    CoreModule
   ],
   providers: [
     TokenInterceptor,
