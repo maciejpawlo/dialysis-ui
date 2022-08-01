@@ -12,6 +12,10 @@ const routes: Routes = [
   path: 'doctorList',
   component: DoctorListComponent
 },
+{
+  path: '**',
+  redirectTo: 'doctorList'
+}
 ];
 
 @NgModule({

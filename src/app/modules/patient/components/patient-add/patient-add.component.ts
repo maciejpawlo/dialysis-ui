@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { CreatePatientRequest } from 'src/app/modules/core/api/models';
+import { CreatePatientRequest, DoctorDto } from 'src/app/modules/core/api/models';
 import { UserService } from 'src/app/modules/core/api/services';
 import { InfoDialogComponent } from 'src/app/modules/core/dialogs/info-dialog/info-dialog.component';
 import { Patient } from '../../models/patient';
@@ -23,8 +23,15 @@ export class PatientAddComponent implements OnInit {
 
   patientForm!: FormGroup;
   patient!: Patient;
+  doctors!:DoctorDto;
 
   ngOnInit(): void {
+    // this.userService.apiUserDoctorsGet$Json().subscribe({
+    //   next: data=>{
+    //     console.log(data.doctors);
+    //   }
+    // });
+
     this.patientForm = this.fb.group({
       userName: ['', [Validators.required]],
       firstName: ['', [Validators.required]],
@@ -36,6 +43,7 @@ export class PatientAddComponent implements OnInit {
   }
 
   save(): void{
+    console.log('save clicked')
     if (this.patientForm.valid) {
       let request: CreatePatientRequest = {
         birthDate: this.patientForm.get('birthDate')?.value,
@@ -48,7 +56,6 @@ export class PatientAddComponent implements OnInit {
       this.userService.apiUserPatientsPost$Json({body: request})
         .subscribe({
           next: data=>{
-            console.log(data)
             const infoDialogRef = this.dialog.open(InfoDialogComponent, {
               width: '400px',
               data: {title: 'Patient Created', message: `<b>Username</b>: ${data.userName}` + '</br>'+ `<b>Password</b>: ${data.password}`}

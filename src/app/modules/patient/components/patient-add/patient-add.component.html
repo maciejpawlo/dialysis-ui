@@ -3,7 +3,7 @@
     <mat-card-header>
       <mat-card-title>Add new patient</mat-card-title>
     </mat-card-header>
-    <form novalidate (ngSubmit)="save()" [formGroup]="patientForm" fxLayout = "column">
+    <form novalidate [formGroup]="patientForm" fxLayout = "column">
       <mat-form-field appearance="fill">
         <mat-label>User name</mat-label>
         <input matInput placeholder="user1234" formControlName="userName">
@@ -43,6 +43,15 @@
           <mat-option [value]="1">Female</mat-option>
         </mat-select>
       </mat-form-field>
+
+      <!-- <mat-form-field appearance="fill">
+        <mat-label>Doctors</mat-label>
+        <mat-chip-list #chipList>
+          <mat-chip>MD Adam Nowak</mat-chip>
+          <mat-chip>MD Jan Kowalski</mat-chip>
+        </mat-chip-list>
+        <input [matChipInputFor]="chipList">
+      </mat-form-field> -->
 
       <button mat-button (click)="save()">
         SAVE
