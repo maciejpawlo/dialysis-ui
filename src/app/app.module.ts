@@ -38,7 +38,7 @@ export const API_INTERCEPTOR_PROVIDER: Provider = {
     FormsModule,
     FlexLayoutModule,
     HttpClientModule,
-    ApiModule.forRoot({ rootUrl: 'https://localhost:5001' }),
+    ApiModule.forRoot({ rootUrl: 'https://localhost:44321' }),
     CoreModule
   ],
   providers: [

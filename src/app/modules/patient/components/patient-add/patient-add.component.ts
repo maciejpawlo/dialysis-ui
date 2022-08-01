@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { CreatePatientRequest } from 'src/app/modules/core/api/models';
 import { UserService } from 'src/app/modules/core/api/services';
+import { InfoDialogComponent } from 'src/app/modules/core/dialogs/info-dialog/info-dialog.component';
 import { Patient } from '../../models/patient';
 
 @Component({
@@ -15,7 +17,8 @@ export class PatientAddComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private userService: UserService
+    private userService: UserService,
+    private dialog: MatDialog
     ) { }
 
   patientForm!: FormGroup;
@@ -46,11 +49,16 @@ export class PatientAddComponent implements OnInit {
         .subscribe({
           next: data=>{
             console.log(data)
+            const infoDialogRef = this.dialog.open(InfoDialogComponent, {
+              width: '400px',
+              data: {title: 'Patient Created', message: `<b>Username</b>: ${data.userName}` + '</br>'+ `<b>Password</b>: ${data.password}`}
+            });
+            infoDialogRef.afterClosed().subscribe(()=>{
+              this.router.navigate(['/patients/patientsList']);
+            });
           }
         });
     }
-    //TODO: display dialog with result
-    this.router.navigate(['/patients/patientsList']);
   }
 
 }

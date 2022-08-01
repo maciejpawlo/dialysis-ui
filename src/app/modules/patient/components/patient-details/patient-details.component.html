@@ -49,11 +49,6 @@
           <td mat-cell *matCellDef="let element"> {{element.createdAt | date:'medium'}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="PatientID">
-          <th mat-header-cell *matHeaderCellDef> Patient ID </th>
-          <td mat-cell *matCellDef="let element"> {{element.patientID}} </td>
-        </ng-container>
-
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row (click)="navigateToExaminationDetails(row)" *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>

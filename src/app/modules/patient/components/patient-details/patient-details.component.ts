@@ -7,6 +7,7 @@ import { map, Observable } from 'rxjs';
 import { ExaminationDto, PatientDto } from 'src/app/modules/core/api/models';
 import { ExaminationsService, UserService } from 'src/app/modules/core/api/services';
 import { ConfirmDialogComponent, ConfirmDialogModel } from 'src/app/modules/core/dialogs/confirm-dialog/confirm-dialog.component';
+import { InfoDialogComponent } from 'src/app/modules/core/dialogs/info-dialog/info-dialog.component';
 import { TokenService } from 'src/app/modules/core/services/token.service';
 import { Examination } from 'src/app/modules/examination/models/examination';
 import { Patient } from '../../models/patient';
@@ -30,7 +31,7 @@ export class PatientDetailsComponent implements OnInit, AfterViewInit {
   };
   //examination table data
   examinations!: ExaminationDto[]
-  displayedColumns: string[] = ['ExaminationID', 'Weight', 'Turbidity', 'CreatedAt', 'PatientID'];
+  displayedColumns: string[] = ['ExaminationID', 'Weight', 'Turbidity', 'CreatedAt'];
   dataSource!: MatTableDataSource<ExaminationDto>;
 
   //chart options
