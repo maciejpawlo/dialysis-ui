@@ -7,7 +7,7 @@
     <mat-nav-list>
       <a mat-list-item [routerLink] = "['/patients/patientsList']" routerLinkActive="active-link" (click)="sidenav.toggle()">Patient list</a>
       <!-- <a mat-list-item [routerLink]= "['/examinations/examinationsList']" routerLinkActive="active-link" (click)="sidenav.toggle()">Examination list</a> -->
-      <a mat-list-item [routerLink] = "['/doctors/doctorsList']" routerLinkActive="active-link" (click)="sidenav.toggle()">Doctor list</a>
+      <a mat-list-item *ngIf="role?.toLowerCase() === 'administrator'" [routerLink] = "['/doctors/doctorsList']" routerLinkActive="active-link" (click)="sidenav.toggle()">Doctor list</a>
     </mat-nav-list>
   </mat-sidenav>
 

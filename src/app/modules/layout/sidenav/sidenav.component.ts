@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { TokenService } from '../../core/services/token.service';
 
 @Component({
   selector: 'app-sidenav',
@@ -7,9 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SidenavComponent implements OnInit {
 
-  constructor() { }
+  role!:string;
+
+  constructor(
+    private tokenService: TokenService
+  ) { }
 
   ngOnInit(): void {
+    this.role = this.tokenService.getUserRole()!;
   }
 
 }

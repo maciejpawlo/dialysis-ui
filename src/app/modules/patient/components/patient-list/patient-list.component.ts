@@ -89,8 +89,16 @@ export class PatientListComponent implements OnInit, AfterViewInit {
           .subscribe({
             next: data => {
               queryParams = {doctorID: data.internalUserID}
+
+              this.userService.apiUserPatientsGet$Json(queryParams)
+              .subscribe({
+                next: data => {
+                    this.dataSource.data = data.patients!
+                }
+              });
             }
           });
+          return;
       }
 
       this.userService.apiUserPatientsGet$Json(queryParams)

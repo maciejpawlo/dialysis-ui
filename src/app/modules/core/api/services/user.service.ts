@@ -47,6 +47,7 @@ export class UserService extends BaseService {
     firstName?: string;
     lastName?: string;
     permissionNumber?: string;
+    patientID?: number;
     includePatients?: boolean;
   }): Observable<StrictHttpResponse<GetDoctorsResponse>> {
 
@@ -55,6 +56,7 @@ export class UserService extends BaseService {
       rb.query('firstName', params.firstName, {});
       rb.query('lastName', params.lastName, {});
       rb.query('permissionNumber', params.permissionNumber, {});
+      rb.query('patientID', params.patientID, {});
       rb.query('includePatients', params.includePatients, {});
     }
 
@@ -79,6 +81,7 @@ export class UserService extends BaseService {
     firstName?: string;
     lastName?: string;
     permissionNumber?: string;
+    patientID?: number;
     includePatients?: boolean;
   }): Observable<GetDoctorsResponse> {
 
@@ -97,6 +100,7 @@ export class UserService extends BaseService {
     firstName?: string;
     lastName?: string;
     permissionNumber?: string;
+    patientID?: number;
     includePatients?: boolean;
   }): Observable<StrictHttpResponse<GetDoctorsResponse>> {
 
@@ -105,6 +109,7 @@ export class UserService extends BaseService {
       rb.query('firstName', params.firstName, {});
       rb.query('lastName', params.lastName, {});
       rb.query('permissionNumber', params.permissionNumber, {});
+      rb.query('patientID', params.patientID, {});
       rb.query('includePatients', params.includePatients, {});
     }
 
@@ -129,6 +134,7 @@ export class UserService extends BaseService {
     firstName?: string;
     lastName?: string;
     permissionNumber?: string;
+    patientID?: number;
     includePatients?: boolean;
   }): Observable<GetDoctorsResponse> {
 

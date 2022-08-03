@@ -45,7 +45,7 @@
     <mat-paginator [length]="dataSource.data.length" [pageSize]="5"></mat-paginator>
 
     <mat-card-actions align="start" *ngIf="role?.toLowerCase() === 'administrator'">
-      <button mat-flat-button color="basic">
+      <button mat-flat-button color="basic" (click)="addDoctor()">
         ADD DOCTOR
       </button>
     </mat-card-actions>

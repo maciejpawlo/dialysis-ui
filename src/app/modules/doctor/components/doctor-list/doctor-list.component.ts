@@ -54,8 +54,12 @@ export class DoctorListComponent implements OnInit, AfterViewInit {
       });
   }
 
+  addDoctor(): void{
+    this.router.navigate(['/doctors/add'])
+  }
+
   editDoctor(doctor: DoctorDto): void{
-    console.log('edit')
+    this.router.navigate(['/doctors', doctor.doctorID, 'edit'])
   }
 
   deleteDoctor(doctor: DoctorDto): void{

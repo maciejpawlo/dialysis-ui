@@ -38,6 +38,13 @@
         </mat-select>
       </mat-form-field>
 
+      <!-- <mat-form-field appearance="fill">
+        <mat-label>Assigned doctors</mat-label>
+        <mat-select formControlName="doctors" multiple>
+          <mat-option *ngFor="let doctor of doctorList" [value]="doctor">{{doctor.firstName}} {{doctor.lastName}}</mat-option>
+        </mat-select>
+      </mat-form-field> -->
+
       <button mat-button (click)="save()">
         SAVE
       </button>

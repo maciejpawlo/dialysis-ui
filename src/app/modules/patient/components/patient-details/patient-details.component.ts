@@ -4,7 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map, Observable } from 'rxjs';
-import { ExaminationDto, PatientDto } from 'src/app/modules/core/api/models';
+import { AssignPatientToDoctorRequest, DoctorDto, ExaminationDto, PatientDto } from 'src/app/modules/core/api/models';
 import { ExaminationsService, UserService } from 'src/app/modules/core/api/services';
 import { ConfirmDialogComponent, ConfirmDialogModel } from 'src/app/modules/core/dialogs/confirm-dialog/confirm-dialog.component';
 import { InfoDialogComponent } from 'src/app/modules/core/dialogs/info-dialog/info-dialog.component';
@@ -34,6 +34,11 @@ export class PatientDetailsComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['ExaminationID', 'Weight', 'Turbidity', 'CreatedAt'];
   dataSource!: MatTableDataSource<ExaminationDto>;
 
+  //assigned doctors table data
+  assignedDoctors!: DoctorDto[];
+  assignedDoctorsDataSource!: MatTableDataSource<DoctorDto>;
+  assignedDoctorsDisplayedColumns!: string[];
+
   //chart options
   showLabels: boolean = true;
   animations: boolean = true;
@@ -61,6 +66,13 @@ export class PatientDetailsComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     const patientID = this.route.snapshot.paramMap.get('id');
+    this.role = this.tokenService.getUserRole();
+
+    if(this.role?.toLowerCase() === 'administrator') {
+      this.assignedDoctorsDisplayedColumns = ['DoctorID', 'FirstName', 'LastName', 'PermissionNumber', 'Actions'];
+    } else {
+      this.assignedDoctorsDisplayedColumns = ['DoctorID', 'FirstName', 'LastName', 'PermissionNumber'];
+    }
 
     this.userService.apiUserPatientsIdGet$Json({id: Number(patientID)})
       .pipe(map(data => {
@@ -90,8 +102,9 @@ export class PatientDetailsComponent implements OnInit, AfterViewInit {
         }
       });
 
-    this.role = this.tokenService.getUserRole();
-    console.log(this.role)
+    this.assignedDoctorsDataSource = new MatTableDataSource<DoctorDto>()
+
+    this.refreshDoctorTable(Number(patientID));
   }
 
   ngAfterViewInit(): void {
@@ -147,5 +160,45 @@ export class PatientDetailsComponent implements OnInit, AfterViewInit {
     });
 
     return chartData;
+  }
+
+  handleDoctorMenu(event: any){
+    event.stopPropagation();
+    event.preventDefault();
+  }
+
+  refreshDoctorTable(patientID: number): void {
+    this.userService.apiUserDoctorsGet$Json({patientID: patientID})
+      .subscribe({
+        next: data => {
+          this.assignedDoctorsDataSource.data = data.doctors!;
+        }
+      });
+  }
+
+  deletePatientDoctorAssignment(doctor: DoctorDto): void {
+    const dialogData = new ConfirmDialogModel('Delete doctor-patient assignment', 'Are you sure you want to delete doctor-patient assignment?')
+
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(result=>{
+      if(result){
+        console.log('delete pt-doc', doctor.doctorID!);
+        const request: AssignPatientToDoctorRequest = {
+          patientID: this.patient.PatientID,
+          doctorID: doctor.doctorID!
+        };
+
+        this.userService.apiUserUnassignPatientFromDoctorPost$Json({body: request})
+          .subscribe({
+            next: data => {
+              this.refreshDoctorTable(this.patient.PatientID);
+            }
+          });
+      }
+    })
   }
 }
