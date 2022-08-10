@@ -51,6 +51,7 @@ export class PatientDetailsComponent implements OnInit, AfterViewInit {
   yAxisLabel: string = 'Turbidity';
   timeline: boolean = true;
   chartData: any[] = [];
+  legend: boolean = true;
   legendPosition: LegendPosition = LegendPosition.Below;
 
   role!:string | null;
