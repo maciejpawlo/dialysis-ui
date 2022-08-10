@@ -43,7 +43,6 @@ export class PatientAddComponent implements OnInit {
   }
 
   save(): void{
-    console.log('save clicked')
     if (this.patientForm.valid) {
       let request: CreatePatientRequest = {
         birthDate: this.patientForm.get('birthDate')?.value,

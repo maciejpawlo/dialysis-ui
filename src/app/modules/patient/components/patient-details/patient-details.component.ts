@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
+import { LegendPosition } from '@swimlane/ngx-charts';
 import { map, Observable } from 'rxjs';
 import { AssignPatientToDoctorRequest, DoctorDto, ExaminationDto, PatientDto } from 'src/app/modules/core/api/models';
 import { ExaminationsService, UserService } from 'src/app/modules/core/api/services';
@@ -31,7 +32,7 @@ export class PatientDetailsComponent implements OnInit, AfterViewInit {
   };
   //examination table data
   examinations!: ExaminationDto[]
-  displayedColumns: string[] = ['ExaminationID', 'Weight', 'Turbidity', 'CreatedAt'];
+  displayedColumns: string[] = ['ExaminationID', 'Weight', 'TurbidityNTU', 'TurbidityFAU', 'CreatedAt'];
   dataSource!: MatTableDataSource<ExaminationDto>;
 
   //assigned doctors table data
@@ -50,6 +51,7 @@ export class PatientDetailsComponent implements OnInit, AfterViewInit {
   yAxisLabel: string = 'Turbidity';
   timeline: boolean = true;
   chartData: any[] = [];
+  legendPosition: LegendPosition = LegendPosition.Below;
 
   role!:string | null;
 
@@ -146,17 +148,26 @@ export class PatientDetailsComponent implements OnInit, AfterViewInit {
   generateExaminationChartData(examinations: ExaminationDto[]) {
     let chartData: any[] = [
       {
-        "name": `Examination`,
-        "series": []
+        "name": `Turbidity NTU`,
+        "series": [],
+      },
+      {
+        "name": `Turbidity FAU`,
+        "series": [],
       }
     ];
 
     examinations.forEach(item => {
-      const chartItem = {
-        "name": new Date(item.createdAt!).toLocaleString('en-US'),
-        "value": item.turbidity
+      const chartItemNTU = {
+        "name": new Date(item.createdAt!).toLocaleString('en-US'), //x
+        "value": item.turbidityNTU //y
       }
-      chartData[0].series.push(chartItem);
+      chartData[0].series.push(chartItemNTU);
+      const chartItemFAU = {
+        "name": new Date(item.createdAt!).toLocaleString('en-US'), //x
+        "value": item.turbidityFAU //y
+      }
+      chartData[1].series.push(chartItemFAU);
     });
 
     return chartData;

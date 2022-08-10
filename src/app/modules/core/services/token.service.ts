@@ -58,7 +58,7 @@ export class TokenService {
     }
     return {};
   }
-
+ 
   getUserRole(): string | null {
     const jwt = window.localStorage.getItem(TOKEN_KEY);
     if(jwt){

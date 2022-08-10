@@ -5,6 +5,9 @@ export interface ExaminationDto {
   examinationID?: number;
   imageURL?: null | string;
   patientID: number;
-  turbidity: number;
+  turbidityFAU: number;
+  turbidityNTU: number;
+  diastolicPressure: number;
+  systolicPressure: number;
   weight: number;
 }

@@ -62,7 +62,6 @@ export class AuthenticationService {
           refreshResult = true;
         }
       }
-      console.log('refersh result: ', refreshResult)
       return refreshResult;
     } else {
       return true;
