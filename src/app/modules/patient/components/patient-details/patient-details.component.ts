@@ -7,6 +7,7 @@ import { LegendPosition } from '@swimlane/ngx-charts';
 import { map, Observable } from 'rxjs';
 import { AssignPatientToDoctorRequest, DoctorDto, ExaminationDto, PatientDto } from 'src/app/modules/core/api/models';
 import { ExaminationsService, UserService } from 'src/app/modules/core/api/services';
+import { AssignDoctorToPatientDialogComponent, AssignDoctorToPatientDialogModel } from 'src/app/modules/core/dialogs/assign-doctor-to-patient-dialog/assign-doctor-to-patient-dialog.component';
 import { ConfirmDialogComponent, ConfirmDialogModel } from 'src/app/modules/core/dialogs/confirm-dialog/confirm-dialog.component';
 import { InfoDialogComponent } from 'src/app/modules/core/dialogs/info-dialog/info-dialog.component';
 import { TokenService } from 'src/app/modules/core/services/token.service';
@@ -32,7 +33,7 @@ export class PatientDetailsComponent implements OnInit, AfterViewInit {
   };
   //examination table data
   examinations!: ExaminationDto[]
-  displayedColumns: string[] = ['ExaminationID', 'Weight', 'TurbidityNTU', 'TurbidityFAU', 'CreatedAt'];
+  displayedColumns: string[] = ['ExaminationID', 'Weight', 'TurbidityNTU', 'TurbidityFAU', 'Pressure', 'CreatedAt'];
   dataSource!: MatTableDataSource<ExaminationDto>;
 
   //assigned doctors table data
@@ -212,5 +213,20 @@ export class PatientDetailsComponent implements OnInit, AfterViewInit {
           });
       }
     })
+  }
+
+  assignDoctorToPatient(): void {
+    const dialogData = new AssignDoctorToPatientDialogModel(this.patient.PatientID)
+
+    const dialogRef = this.dialog.open(AssignDoctorToPatientDialogComponent, {
+      width: '400px',
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(result=>{
+      if(result){
+        this.refreshDoctorTable(this.patient.PatientID);
+      }
+    });
   }
 }
