@@ -38,7 +38,7 @@ export class DoctorEditComponent implements OnInit {
           this.doctorForm.patchValue({
             firstName: data.firstName,
             lastName: data.lastName,
-            permissionNumber: data.lastName
+            permissionNumber: data.permissionNumber
           });
         }
       });
